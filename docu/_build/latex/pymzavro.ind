@@ -1,0 +1,50 @@
+\begin{theindex}
+\def\bigletter#1{{\Large\sffamily#1}\nopagebreak\vspace{1mm}}
+
+  \bigletter A
+  \item addcvParamLocList() (avroSpectrum.avroSpectrum method), \hyperpage{11}
+  \item advSeek() (mzMLWriter.mzMLWriter method), \hyperpage{6}
+  \item avroSpectrum (class in avroSpectrum), \hyperpage{11}
+  \item avroSpectrum (module), \hyperpage{11}
+
+  \indexspace
+  \bigletter G
+  \item getByAccession() (avroSpectrum.avroSpectrum method), \hyperpage{11}
+  \item getIntensityArray() (avroSpectrum.avroSpectrum method), \hyperpage{11}
+  \item getMSDict() (avroSpectrum.avroSpectrum method), \hyperpage{11}
+  \item getmzArray() (avroSpectrum.avroSpectrum method), \hyperpage{11}
+  \item getSpectrum() (avroSpectrum.avroSpectrum method), \hyperpage{11}
+
+  \indexspace
+  \bigletter I
+  \item init\_file() (mzMLWriter.mzMLWriter method), \hyperpage{6}
+  \item iterOvercvParam() (avroSpectrum.avroSpectrum method), \hyperpage{11}
+
+  \indexspace
+  \bigletter M
+  \item mzAvroWriter() (mzMLWriter.mzMLWriter method), \hyperpage{6}
+  \item mzMLWriter (class in mzMLWriter), \hyperpage{5}
+  \item mzMLWriter (module), \hyperpage{5}
+
+  \indexspace
+  \bigletter P
+  \item PymzAvroReader (class in reader), \hyperpage{9}
+
+  \indexspace
+  \bigletter R
+  \item reader (module), \hyperpage{9}
+  \item rndSeek() (reader.PymzAvroReader method), \hyperpage{9}
+
+  \indexspace
+  \bigletter S
+  \item setData() (avroSpectrum.avroSpectrum method), \hyperpage{11}
+  \item setFromDict() (avroSpectrum.avroSpectrum method), \hyperpage{11}
+  \item setMSPropDict() (avroSpectrum.avroSpectrum method), \hyperpage{12}
+  \item simplemzAvroWriter() (mzMLWriter.mzMLWriter method), \hyperpage{6}
+
+  \indexspace
+  \bigletter W
+  \item writemzAvroMeta() (mzMLWriter.mzMLWriter method), \hyperpage{7}
+  \item writeOffsetToJson() (mzMLWriter.mzMLWriter method), \hyperpage{7}
+
+\end{theindex}

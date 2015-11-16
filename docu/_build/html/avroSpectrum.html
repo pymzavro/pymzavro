@@ -1,0 +1,230 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>AvroSpectrumClass &mdash; pymzavro 0.5 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="pymzavro 0.5 documentation" href="index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-avroSpectrum">
+<span id="avrospectrumclass"></span><h1>AvroSpectrumClass<a class="headerlink" href="#module-avroSpectrum" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="avroSpectrum.avroSpectrum">
+<em class="property">class </em><code class="descclassname">avroSpectrum.</code><code class="descname">avroSpectrum</code><a class="headerlink" href="#avroSpectrum.avroSpectrum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores basic information about current spectra and and makes it accessible</p>
+<dl class="method">
+<dt id="avroSpectrum.avroSpectrum.addcvParamLocList">
+<code class="descname">addcvParamLocList</code><span class="sig-paren">(</span><em>addList</em><span class="sig-paren">)</span><a class="headerlink" href="#avroSpectrum.avroSpectrum.addcvParamLocList" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Used to add a list as a path to a cvParam to get cvParam data from there</dt>
+<dd><dl class="first last docutils">
+<dt>:param</dt>
+<dd>addList: list with the path to the access target, currently only additional cvParams are enabled</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="avroSpectrum.avroSpectrum.getByAccession">
+<code class="descname">getByAccession</code><span class="sig-paren">(</span><em>accession</em><span class="sig-paren">)</span><a class="headerlink" href="#avroSpectrum.avroSpectrum.getByAccession" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Returns the value for the accession (obo Tag) from MSDict</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">param accession:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">OBO Accession number, e.g.: &#8220;MS:1000014&#8221;</td>
+</tr>
+<tr class="field-even field"><th class="field-name">return:</th><td class="field-body">value from cvParam for current accession</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="avroSpectrum.avroSpectrum.getIntensityArray">
+<code class="descname">getIntensityArray</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#avroSpectrum.avroSpectrum.getIntensityArray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of intensity values of the current spectum, the values come from pymzML.spectrum.i,
+so if they were decoded in the original
+mzML file, they are decoded by mzML and then written to the avro file.
+:rtype: list
+:return: List of intensity values from the current spectrum</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="avroSpectrum.avroSpectrum.getMSDict">
+<code class="descname">getMSDict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#avroSpectrum.avroSpectrum.getMSDict" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Used to return a dict with all the cvParam informations extracted</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">rtype:</th><td class="field-body">dict</td>
+</tr>
+<tr class="field-even field"><th class="field-name">return:</th><td class="field-body">Returns the  dict with all extracted cvParam informations</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="avroSpectrum.avroSpectrum.getSpectrum">
+<code class="descname">getSpectrum</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#avroSpectrum.avroSpectrum.getSpectrum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a representation of the currently loaded spectrum, either object or dictionary, depending on datasource
+(iterating returns object, seeking returns dictionary)
+:return: self.spectrum</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="avroSpectrum.avroSpectrum.getmzArray">
+<code class="descname">getmzArray</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#avroSpectrum.avroSpectrum.getmzArray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of mz values, thevalues come from pymzML.spectrum.mz, so if they were decoded in the original
+mzML file, they are decoded by mzML and then written to the avro file.
+:rtype: list
+:return: List of mzValues from the current spectrum</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="avroSpectrum.avroSpectrum.iterOvercvParam">
+<code class="descname">iterOvercvParam</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#avroSpectrum.avroSpectrum.iterOvercvParam" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads cvParams specified in cvParamLocList and stores them with their accession number in a dictionary called
+MSDict</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="avroSpectrum.avroSpectrum.setData">
+<code class="descname">setData</code><span class="sig-paren">(</span><em>avroSpectrum</em><span class="sig-paren">)</span><a class="headerlink" href="#avroSpectrum.avroSpectrum.setData" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Loads the current spectrum data to the avroSpectrum class</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">param avroSpectrum:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Avro spectrum class</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="avroSpectrum.avroSpectrum.setFromDict">
+<code class="descname">setFromDict</code><span class="sig-paren">(</span><em>currentDict</em><span class="sig-paren">)</span><a class="headerlink" href="#avroSpectrum.avroSpectrum.setFromDict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to build MSDict from a dictionary (e.g. for seeking)
+:param currentDict: Dict that represents the data of the spectrum
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="avroSpectrum.avroSpectrum.setMSPropDict">
+<code class="descname">setMSPropDict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#avroSpectrum.avroSpectrum.setMSPropDict" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Sets minimum OBO list derived from pymzML minimum OBO, used to know wich attribute to get from cvParam</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">return:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/avroSpectrum.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, Marius.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="_sources/avroSpectrum.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,12 @@
+hdfs dfs -rm -r /out2
+
+start=$(perl -e 'print time()')
+
+
+hadoop jar hadoop-streaming-2.6.0.jar -files mapper.py,reducer.py,avro-1.7.7.jar,avro-mapred-1.7.7-hadoop2.jar -D mapreduce.job.reduces=1 -libjars avro-1.7.7.jar,avro-mapred-1.7.7-hadoop2.jar -input /Y1.avro -output /out2 -mapper mapper.py -reducer reducer.py -inputformat org.apache.avro.mapred.AvroAsTextInputFormat
+
+end=$(perl -e 'print time()')
+
+time=$((end-start))
+echo $time
+

@@ -1,0 +1,39 @@
+{
+  "name" : "mzML",
+  "type" : "record",
+  "namespace" : "",
+  "fields" : [
+    {
+      "name" : "cvList",
+      "namespace" : "mzML",
+      "type" : [
+        {
+          "name" : "cvList",
+          "type" : "record",
+          "namespace" : "mzML",
+          "fields" : [
+            {
+              "name" : "cv",
+              "type" : [
+                {
+                  "type" : "array",
+                  "items" : {
+                    "name" : "cv",
+                    "type" : "record",
+                    "namespace" : "mzML.cvList.cv",
+                    "fields" : {
+                      "name" : "id",
+                      "type" : ["string", "null"]
+                    }
+                  }
+                },
+                "null"
+              ]
+            }
+          ]
+        },
+        "null"
+      ]
+    }
+  ]
+}

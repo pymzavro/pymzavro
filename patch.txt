@@ -1,0 +1,154 @@
+diff --git a/.gitignore b/.gitignore
+old mode 100644
+new mode 100755
+diff --git a/.travis.yml b/.travis.yml
+old mode 100644
+new mode 100755
+diff --git a/LICENSE b/LICENSE
+old mode 100644
+new mode 100755
+diff --git a/MANIFEST.in b/MANIFEST.in
+old mode 100644
+new mode 100755
+diff --git a/README.md b/README.md
+old mode 100644
+new mode 100755
+diff --git a/clone_avro_and_build.sh b/clone_avro_and_build.sh
+index 8aed33a..7f266d5 100755
+--- a/clone_avro_and_build.sh
++++ b/clone_avro_and_build.sh
+@@ -19,7 +19,8 @@ set -eux
+ STATIC=0
+ [ "${1:-}" = '--static' ] && STATIC=1
+ 
+-MYDIR=$(dirname $(readlink -f "$0"))
++
++MYDIR=$(python -c "import os,sys; print os.getcwd()" "$0")
+ 
+ cd $MYDIR
+ 
+@@ -73,7 +74,12 @@ fi
+ 
+ python setup.py build
+ 
+-export PYTHONPATH=$(readlink -e build/lib*):$(readlink -e $AVRO/lang/py/build/lib*)
++
++export PYTHONPATH=$(python -c "import os, sys; from glob import glob; print os.path.abspath(glob('build/lib*')[0])"):$(python -c"import os, sys; from glob import glob; print glob('$AVRO/lang/py/build/lib*')[0]")
++#export PYTHONPATH=$(readlink -e build/lib*):$(readlink -e $AVRO/lang/py/build/lib*)
++
++#echo $test
++#echo $PYTHONPATH
+ 
+ cd tests
+ py.test -sv .
+diff --git a/pyavroc/__init__.py b/pyavroc/__init__.py
+old mode 100644
+new mode 100755
+diff --git a/pyavroc/_version.py b/pyavroc/_version.py
+old mode 100644
+new mode 100755
+diff --git a/src/avroenum.c b/src/avroenum.c
+old mode 100644
+new mode 100755
+diff --git a/src/avroenum.h b/src/avroenum.h
+old mode 100644
+new mode 100755
+diff --git a/src/convert.c b/src/convert.c
+old mode 100644
+new mode 100755
+diff --git a/src/convert.h b/src/convert.h
+old mode 100644
+new mode 100755
+diff --git a/src/deserializer.c b/src/deserializer.c
+old mode 100644
+new mode 100755
+diff --git a/src/deserializer.h b/src/deserializer.h
+old mode 100644
+new mode 100755
+diff --git a/src/error.c b/src/error.c
+old mode 100644
+new mode 100755
+diff --git a/src/error.h b/src/error.h
+old mode 100644
+new mode 100755
+diff --git a/src/filereader.c b/src/filereader.c
+old mode 100644
+new mode 100755
+diff --git a/src/filereader.h b/src/filereader.h
+old mode 100644
+new mode 100755
+diff --git a/src/filewriter.c b/src/filewriter.c
+old mode 100644
+new mode 100755
+index 1ac65ce..d059590
+--- a/src/filewriter.c
++++ b/src/filewriter.c
+@@ -19,7 +19,7 @@
+ #include "structmember.h"
+ #include "error.h"
+ 
+-#define PYAVROC_BLOCK_SIZE (128 * 1024)
++#define PYAVROC_BLOCK_SIZE (512 * 2048)
+ 
+ static int
+ AvroFileWriter_init(AvroFileWriter *self, PyObject *args, PyObject *kwds)
+@@ -56,7 +56,7 @@ AvroFileWriter_init(AvroFileWriter *self, PyObject *args, PyObject *kwds)
+     self->pyfile = pyfile;
+     Py_INCREF(pyfile);
+ 
+-    if (avro_file_writer_create_with_codec_fp(file, "pyfile", 0, self->schema, &self->writer, "null", PYAVROC_BLOCK_SIZE)) {
++    if (avro_file_writer_create_with_codec_fp(file, "pyfile", 0, self->schema, &self->writer, "deflate", PYAVROC_BLOCK_SIZE)) {
+         PyErr_Format(PyExc_IOError, "Error opening file: %s", avro_strerror());
+         return -1;
+     }
+diff --git a/src/filewriter.h b/src/filewriter.h
+old mode 100644
+new mode 100755
+diff --git a/src/pyavro.c b/src/pyavro.c
+old mode 100644
+new mode 100755
+diff --git a/src/record.c b/src/record.c
+old mode 100644
+new mode 100755
+diff --git a/src/record.h b/src/record.h
+old mode 100644
+new mode 100755
+diff --git a/src/serializer.c b/src/serializer.c
+old mode 100644
+new mode 100755
+diff --git a/src/serializer.h b/src/serializer.h
+old mode 100644
+new mode 100755
+diff --git a/src/util.c b/src/util.c
+old mode 100644
+new mode 100755
+diff --git a/src/util.h b/src/util.h
+old mode 100644
+new mode 100755
+diff --git a/tests/_testhelper.py b/tests/_testhelper.py
+old mode 100644
+new mode 100755
+diff --git a/tests/test_copy.py b/tests/test_copy.py
+old mode 100644
+new mode 100755
+diff --git a/tests/test_deserialize.py b/tests/test_deserialize.py
+old mode 100644
+new mode 100755
+diff --git a/tests/test_recursive_types.py b/tests/test_recursive_types.py
+old mode 100644
+new mode 100755
+diff --git a/tests/test_serialize.py b/tests/test_serialize.py
+old mode 100644
+new mode 100755
+diff --git a/tests/test_types.py b/tests/test_types.py
+old mode 100644
+new mode 100755
+diff --git a/tests/test_validate.py b/tests/test_validate.py
+old mode 100644
+new mode 100755
+diff --git a/tests/test_vs_avro_python.py b/tests/test_vs_avro_python.py
+old mode 100644
+new mode 100755
+diff --git a/tests/test_write.py b/tests/test_write.py
+old mode 100644
+new mode 100755

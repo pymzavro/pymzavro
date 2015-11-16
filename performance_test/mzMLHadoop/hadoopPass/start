@@ -1,0 +1,12 @@
+hdfs dfs -rm -r /mzMLOut
+
+start=$(perl -e 'print time()')
+
+hadoop jar hadoop-streaming-2.6.0.jar -files mapper.py,reducer.py -inputreader "StreamXmlRecordReader,begin=<spectrum ,end=/spectrum>" -input /Y1.mzML -mapper mapper.py -reducer reducer.py -output /mzMLOut -numReduceTasks 0
+
+
+end=$(perl -e 'print time()')
+
+time=$((end-start))
+echo $time
+
