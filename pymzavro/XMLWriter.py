@@ -3,8 +3,6 @@ import xml.etree.cElementTree as ET
 import pprint
 import json
 import pyavroc
-import time
-
 __author__ = 'marius'
 
 

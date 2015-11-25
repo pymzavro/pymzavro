@@ -1,6 +1,6 @@
 from __future__ import print_function
 
-#!/usr/bin/env python3
+#!/usr/bin/env python
 __author__ = 'marius'
 
 from distutils.core import setup
