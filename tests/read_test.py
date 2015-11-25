@@ -20,7 +20,7 @@ def test_read():
 	avroFileSeek = open("BSA3.avro")
 	indexReader = pymzavro.reader.PymzAvroReader(avroFileSeek, indexFile="BSA3_index.json")
 
-	spectrum = indexReader.rndSeek(694, "BSA3.avro")
+	spectrum = indexReader.rndSeek(694)
 	print(sum(spectrum.getIntensityArray()))
 
 	return 1
