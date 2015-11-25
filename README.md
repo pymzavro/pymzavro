@@ -10,7 +10,9 @@ Linux Mint 17.2:
 - pip
 - zlib-dev
 - fastavro
+    - from pip
 - pymzml
+    - install most recent version from github, older versions might cause errors
 - lzma-dev
 - g++
 
