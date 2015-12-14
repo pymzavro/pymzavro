@@ -3,7 +3,8 @@ __author__ = 'marius'
 
 
 import pprint
-
+import pyavroc
+import fastavro
 
 class avroSpectrum(object):
     """
@@ -18,8 +19,11 @@ class avroSpectrum(object):
         self.createcvParamList()
         self.spectrum = None
         self.metaData = None
+        self.metaDataFile = None
         self.cvParamDict = {}
+        self.metacvDict = {}
         self.setMSPropDict()
+        self.chromaDict = {}
 
     def setData(self, avroSpectrum):
         """
@@ -35,7 +39,8 @@ class avroSpectrum(object):
             self.iterOvercvParam()
 
     def setMetaData(self, metaData):
-        self.metaData = metaData
+        self.metaDataFile = metaData
+        self.readMetaData()
 
 
 
@@ -95,7 +100,11 @@ class avroSpectrum(object):
             :param accession: OBO Accession number, e.g.: "MS:1000014"
             :return: value from cvParam for current accession
         """
-        return self.MSDict.get(accession)
+
+        cvParam  = self.MSDict.get(accession)
+        if cvParam is None:
+            cvParam = self.metacvDict.get(accession)
+        return cvParam
 
     #returns the mzArray
     def getmzArray(self):
@@ -208,3 +217,44 @@ class avroSpectrum(object):
         :return: self.spectrum
         """
         return self.spectrum
+
+    def getChromatogram(self, id):
+        return self.chromaDict.get(id)
+
+
+    def readMetaData(self):
+        metaReader = pyavroc.AvroFileReader(self.metaDataFile, types=False)
+        for item in metaReader:
+            self.metaData = item
+        self.metaDatatoDict(self.metaData)
+        self.createChromaDict()
+
+
+    def metaDatatoDict(self, metaData):
+        for item in metaData:
+            if item == "cvParam":
+                if isinstance(metaData[item], list):
+                    for cvParam in metaData[item]:
+                        self.metacvDict[cvParam.get("accession")] = cvParam
+                if isinstance(metaData[item], dict):
+                    self.metacvDict[metaData[item].get("accession")] = metaData[item]
+
+                else:
+                    try:
+                        for cvParam in metaData[item]:
+                            self.metacvDict[cvParam.get("accession")] = cvParam
+                    except:
+                        pass
+            elif isinstance(metaData[item], dict):
+                self.metaDatatoDict(metaData[item])
+            elif isinstance(metaData[item], list) and item not in ["timeArray", "intensityArray"]:
+                for data in metaData[item]:
+                    if isinstance(data, dict):
+                        self.metaDatatoDict(data)
+                    else:
+                        print("Non handled data: ", data)
+
+    def createChromaDict(self):
+        if self.metaData.get("chromalist") is not None:
+            for data in self.metaData.get("chromalist"):
+                self.chromaDict[data.get("name")] = self.metaData.get("chromalist")

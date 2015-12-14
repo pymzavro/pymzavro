@@ -5,16 +5,19 @@ __author__ = 'marius'
 import pymzavro.SchemaBuilder
 import pymzavro
 import pymzml
+import pprint
+
+pp = pprint.PrettyPrinter()
 
 
-#schema creator
+
+# schema creator
 def schema_creator():
-	xsd = open("mzML1.1.0.xsd", "rb")
-	typeFile = open("typeDict.json", "w")
-	fullSchemaFile = open("fullSchema.avsc", "w")
-	spectrumFile = open("spectrum.avsc", "w")
+    xsd = open("mzML1.1.0.xsd", "rb")
+    typeFile = open("typeDict.json", "w")
+    fullSchemaFile = open("fullSchema.avsc", "w")
+    spectrumFile = open("spectrum.avsc", "w")
 
-	schemabuilder = pymzavro.SchemaBuilder.SchemaBuilder(xsd)
-	schemabuilder.initFiles(fullSchemaFile=fullSchemaFile, subSchemaFile=spectrumFile, typeDictFile=typeFile)
-	schemabuilder.autoMake()
-
+    schemabuilder = pymzavro.SchemaBuilder.SchemaBuilder(xsd)
+    schemabuilder.initFiles(fullSchemaFile=fullSchemaFile, subSchemaFile=spectrumFile, typeDictFile=typeFile)
+    schemabuilder.autoMake()

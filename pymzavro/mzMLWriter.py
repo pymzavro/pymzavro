@@ -213,7 +213,7 @@ class mzMLWriter(Writer):
 
 
     #creates Dict from Metadata
-    def writemzAvroMeta(self):
+    def writemzAvroMeta(self, chromadata=""):
         """
         Writes the metaData to the specified meta data avro file. Metadata are defined as all data from mzML that is
         not stored under a spectrum child.
@@ -221,6 +221,7 @@ class mzMLWriter(Writer):
         print("===============Writing Metadata===============", "\n")
         self.currentType = "mzMLmeta"
         self.start()
+        self.xmlDict.update({"chromalist" : chromadata})
         self.writeDictToFile(self.metaFile, self.avroSchema)
         self.XMLFile.seek(0)
         print("===========Writing Metadata finished==========", "\n")

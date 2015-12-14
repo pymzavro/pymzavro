@@ -3,7 +3,8 @@ import pymzavro
 def test_read():
     print("======sequential read test======")
     avroFile = open("BSA3.avro")
-    reader = pymzavro.reader.PymzAvroReader(avroFile)
+    avroFileMeta = open("BSA3_meta.avro")
+    reader = pymzavro.reader.PymzAvroReader(avroFile, avroFileMeta)
 
     isum = 0
     ms_level = 0

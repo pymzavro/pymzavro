@@ -17,6 +17,41 @@ mzDict = {"name" : "mzArray", "type":[{
       "type" : "array", "items" : ["double", "float"]
     }, "null"]}
 
+chromalist = {
+    "name" : "chromalist",
+    "type" : [
+        {
+            "type" : "array",
+            "items" : [
+                {
+                    "name" : "chromatogram",
+                    "type" : "record",
+                    "fields" : [
+                        {
+                            "name" : "name",
+                            "type" : "string"
+                        },
+                        {
+                            "name" : "intensityArray",
+                            "type" : {
+                                "type" : "array",
+                                "items" : ["double", "float"]
+                            }
+                        },
+                        {
+                            "name" : "timeArray",
+                            "type" : {
+                                "type" : "array",
+                                "items" : ["double", "float"]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }, "null"
+    ]
+}
+
 
 
 class SchemaBuilder:
@@ -125,6 +160,11 @@ class SchemaBuilder:
         """
         self.subSchema["fields"].append(customSchema)
 
+    def appendChromaList(self):
+        self.fullSchema["fields"].append(chromalist)
+
+
+
     def writeSubSchema(self):
         """
         writes the sub schema to the file provided in initfile()
@@ -154,6 +194,7 @@ class SchemaBuilder:
         self.createFullSchema()
         self.initSpectrumCreation()
         self.appendDecodedArray()
+        self.appendChromaList()
         self.writeFullSchema()
         self.writeSubSchema()
         self.writeTypeDict()
