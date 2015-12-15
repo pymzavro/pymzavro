@@ -11,6 +11,7 @@ def test_read():
     for spectrum in reader:
         isum = isum +  sum(spectrum.getIntensityArray())
         ms_level = ms_level + int(spectrum.getByAccession("MS:1000511"))
+        print(spectrum.getChromatogram("sic"))
     print (isum)
     print (ms_level)
 

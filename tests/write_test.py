@@ -13,7 +13,7 @@ def test_write():
     '''
 	File objects needed for writing
 	'''
-    mzML = open("BSA3.mzML", "r")
+    mzML = open("tiny.pwiz.1.1.mzML", "r")
     spectrumFile = open("BSA3.avro", "wb")
     metaDataFile = open("BSA3_meta.avro", "wb")  # optional for metadata writing
     typeDict = open("typeDict.json", "rb")
@@ -69,7 +69,7 @@ def test_write():
 
     writer.writeOffsetToJson()
 
-    mzML = open("BSA3.mzML", "r")
+    mzML = open("tiny.pwiz.1.1.mzML", "r")
     spectrumFile = open("BSA3as.avro", "wb")
     metaDataFile = open("BSA3_meta.avro", "wb")  # optional for metadata writing
     typeDict = open("typeDict.json", "rb")

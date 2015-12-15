@@ -257,4 +257,5 @@ class avroSpectrum(object):
     def createChromaDict(self):
         if self.metaData.get("chromalist") is not None:
             for data in self.metaData.get("chromalist"):
-                self.chromaDict[data.get("name")] = self.metaData.get("chromalist")
+                self.pp.pprint(data.get("name"))
+                self.chromaDict.update({data.get("name") : data})
