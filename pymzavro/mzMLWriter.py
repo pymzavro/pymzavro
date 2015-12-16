@@ -102,6 +102,8 @@ class mzMLWriter(Writer):
         self.spectrumAvsc = spectrumAvsc
         self.indexJSON = indexJSON
 
+        self.specCount = 0
+
 
         typeDict.seek(0)
         spectrumAvsc.seek(0)

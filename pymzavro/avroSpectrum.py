@@ -22,8 +22,8 @@ class avroSpectrum(object):
         self.metaDataFile = None
         self.cvParamDict = {}
         self.metacvDict = {}
-        self.setMSPropDict()
         self.chromaDict = {}
+        self.toDict = True
 
     def setData(self, avroSpectrum):
         """
@@ -33,7 +33,7 @@ class avroSpectrum(object):
         """
         if isinstance(avroSpectrum, dict):
             self.spectrum = avroSpectrum
-            self.setFromDict(avroSpectrum)
+            #self.setFromDict(avroSpectrum)
         else:
             self.spectrum = avroSpectrum
             self.iterOvercvParam()
@@ -52,37 +52,47 @@ class avroSpectrum(object):
 
         """
         self.clearMSDict()
-        for item in self.cvParamLocList:
-            self.currentIter = iter(item)
-            currentType = self.spectrum
-            self.getFromAVType(currentType, self.currentIter.next())
+        for paramPathList in self.cvParamLocList:
+            currentSpec = self.spectrum
+            self.paramPathList = iter(paramPathList)
+            self.seekTocvParam(currentSpec)
+
+
         self.MSDict["MS:1000514"] = self.spectrum.mzArray
         self.MSDict["MS:1000515"] = self.spectrum.intensityArray
 
-    #iterator to access a specific cvParamList defined in cvParamLocList
-    def getFromAVType(self, currentType, attribName):
-        if attribName == "cvParam":
-            cvParamList = getattr(currentType, attribName, None)
-            if cvParamList is not None:
-                for cvParam in cvParamList:
-                    accession = getattr(cvParam, "accession", None)
-                    if self.MSPropDict.get(accession) is not None:
-                        dataField = self.MSPropDict[accession][1]
-                        self.MSDict[accession] = getattr(cvParam, dataField)
-                    else:
-                        cvAttr = getattr(cvParam, "value")
-                        self.MSDict[accession] = cvAttr
 
+
+    #iterator to access a specific cvParamList defined in cvParamLocList
+    def seekTocvParam(self, currentSpec):
+        currentName = self.paramPathList.next()
+        if currentName == "cvParam":
+            if self.toDict == True:
+                self.addcvParamToMSDictasDict(getattr(currentSpec, "cvParam"))
+            else:
+                pass
         else:
-            currentObj = getattr(currentType, attribName)
-            if currentObj is not None:
-                if isinstance(currentObj, list):
-                    nextAttrib  = self.currentIter.next()
-                    for attrib in currentObj:
-                        if attrib is not None:
-                            self.getFromAVType(attrib, nextAttrib)
-                else:
-                    self.getFromAVType(currentObj, self.currentIter.next())
+            newspec = getattr(currentSpec, currentName)
+            if newspec is not None:
+                if not isinstance(newspec, list):
+                    self.seekTocvParam(newspec)
+
+    def addcvParamToMSDictasDict(self, currentSpec):
+        if isinstance(currentSpec, list):
+            for cvParam in currentSpec:
+                if cvParam is not None:
+                    dataDict = {
+                        "unitName" : getattr(cvParam, "unitName"),
+                        "accession" : getattr(cvParam, "accession"),
+                        "name" : getattr(cvParam, "name"),
+                        "cvRef" : getattr(cvParam, "cvRef"),
+                        "unitAccession" : getattr(cvParam, "unitAccession"),
+                        "unitCvRef" : getattr(cvParam, "unitCvRef")
+
+                    }
+                    self.MSDict[getattr(cvParam, "accession")] = dataDict
+
+
 
     #returns a dictionary that stores data from cvParams (and optionally userParams), the keys are the Obo tags
     def getMSDict(self):
@@ -92,6 +102,9 @@ class avroSpectrum(object):
             :return: Returns the  dict with all extracted cvParam informations
         """
         return self.MSDict
+
+    def getmetacvDict(self):
+        return self.metacvDict
 
     # returns the data from self.MSDict with a specific accession key
     def getByAccession(self, accession):
@@ -131,29 +144,7 @@ class avroSpectrum(object):
 
 
     #stores some needed informations about Obo tags for minimum Obo list, derived from pymzML minimum Obo,
-    # TODO: write Obo parser/use obo parser from pymzML?
-    def setMSPropDict(self):
-        """
-        Sets minimum OBO list derived from pymzML minimum OBO, used to know wich attribute to get from cvParam
-            :return:
-        """
-        self.MSPropDict = {
-            'MS:1000016' : [False, "value", "scan time"], #scan time
-            'MS:1000040' : [False, "value", "m/z"], #"m/z"
-            'MS:1000041' : [False,  "value", "charge state"], #"charge state"
-            'MS:1000127' : [False, "value", "centroid spectrum"], #"centroid spectrum"
-            'MS:1000128' : [False, "name", "profile spectrum"], #"profile spectrum"
-            'MS:1000133' : [False, "name", "collision-induced dissociation"], #"collision-induced dissociation"
-            'MS:1000285' : [False, "value", "total ion current"], #"total ion current"
-            'MS:1000422' : [False, "name", "high-energy collision-induced dissociation"], #"high-energy collision-induced dissociation"
-            'MS:1000511' : [False, "value", "ms level"], #"ms level"
-            'MS:1000512' : [False, "name", "filter string"], #"filter string"
-            'MS:1000514' : [False, "name", "m/z array"], #"m/z array"
-            'MS:1000515' : [False, "name", "intensity array"], #"intensity array"
-            'MS:1000521' : [False, "name", "32-bit float"], #"32-bit float"
-            'MS:1000523' : [False, "name", "64-bit float"], #"64-bit float"
-            'MS:1000744' : [False, "value", "legacy precursor mz value "]  #legacy precursor mz value ...
-        }
+
     def clearMSDict(self):
         self.MSDict = {}
 
@@ -257,5 +248,4 @@ class avroSpectrum(object):
     def createChromaDict(self):
         if self.metaData.get("chromalist") is not None:
             for data in self.metaData.get("chromalist"):
-                self.pp.pprint(data.get("name"))
                 self.chromaDict.update({data.get("name") : data})
