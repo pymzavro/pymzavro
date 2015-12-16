@@ -1,6 +1,5 @@
 import unittest
 
-import pymzml
 import pymzavro
 from pymzavro.MzAvroConverter import MzConverter
 
@@ -15,20 +14,18 @@ class ConverterTest(unittest.TestCase):
         self.assertEqual(converter.convert(), 1)
 
     def test_read(self):
-        self.cvParamTest()
+        self.assertEqual(self.cvParamTest(), 65)
 
     def cvParamTest(self):
         avroFile = open(avroPath)
         avroFileMeta = open(avroMetaPath)
         avroReader = pymzavro.reader.PymzAvroReader(avroFile, avroFileMeta)
-        mzMLReader = pymzml.run.Reader(mzMLPath)
-
+        cvParamNumber = 0
         for avroSpec in avroReader:
-            mzMLSpec = mzMLReader.next()
             for cvParam in avroSpec.getMSDict():
-                print(cvParam)
-            print("__new__")
-            break
+                cvParamNumber = cvParamNumber+1
+
+        return cvParamNumber
 
 
 

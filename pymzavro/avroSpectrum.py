@@ -4,7 +4,6 @@ __author__ = 'marius'
 
 import pprint
 import pyavroc
-import fastavro
 
 class avroSpectrum(object):
     """
@@ -23,7 +22,7 @@ class avroSpectrum(object):
         self.cvParamDict = {}
         self.metacvDict = {}
         self.chromaDict = {}
-        self.toDict = True
+        self.toDict = False
 
     def setData(self, avroSpectrum):
         """
@@ -53,9 +52,9 @@ class avroSpectrum(object):
         """
         self.clearMSDict()
         for paramPathList in self.cvParamLocList:
+            self.currentPathList = paramPathList
             currentSpec = self.spectrum
-            self.paramPathList = iter(paramPathList)
-            self.seekTocvParam(currentSpec)
+            self.seekTocvParam(currentSpec, currentIndex=0)
 
 
         self.MSDict["MS:1000514"] = self.spectrum.mzArray
@@ -64,35 +63,41 @@ class avroSpectrum(object):
 
 
     #iterator to access a specific cvParamList defined in cvParamLocList
-    def seekTocvParam(self, currentSpec):
-        currentName = self.paramPathList.next()
-        if currentName == "cvParam":
-            if self.toDict == True:
-                self.addcvParamToMSDictasDict(getattr(currentSpec, "cvParam"))
+    def seekTocvParam(self, currentSpec, currentIndex):
+        currentPath = self.currentPathList[currentIndex]
+        newSpec = None
+        try:
+            newSpec = getattr(currentSpec, currentPath)
+        except:
+            pass
+        if newSpec is not None:
+            if currentPath == "cvParam":
+                self.addcvParamToMSDict(newSpec)
+            elif isinstance(newSpec, list):
+                for newSpecFromList in newSpec:
+                    self.seekTocvParam(newSpecFromList, currentIndex+1)
             else:
-                pass
-        else:
-            newspec = getattr(currentSpec, currentName)
-            if newspec is not None:
-                if not isinstance(newspec, list):
-                    self.seekTocvParam(newspec)
+                self.seekTocvParam(newSpec, currentIndex+1)
 
-    def addcvParamToMSDictasDict(self, currentSpec):
+
+    def addcvParamToMSDict(self, currentSpec):
         if isinstance(currentSpec, list):
             for cvParam in currentSpec:
                 if cvParam is not None:
-                    dataDict = {
-                        "unitName" : getattr(cvParam, "unitName"),
-                        "accession" : getattr(cvParam, "accession"),
-                        "name" : getattr(cvParam, "name"),
-                        "cvRef" : getattr(cvParam, "cvRef"),
-                        "unitAccession" : getattr(cvParam, "unitAccession"),
-                        "unitCvRef" : getattr(cvParam, "unitCvRef")
+                    if self.toDict == True:
+                        dataDict = {
+                            "unitName" : getattr(cvParam, "unitName"),
+                            "accession" : getattr(cvParam, "accession"),
+                            "name" : getattr(cvParam, "name"),
+                            "cvRef" : getattr(cvParam, "cvRef"),
+                            "unitAccession" : getattr(cvParam, "unitAccession"),
+                            "unitCvRef" : getattr(cvParam, "unitCvRef")
 
-                    }
-                    self.MSDict[getattr(cvParam, "accession")] = dataDict
+                        }
+                        self.MSDict[getattr(cvParam, "accession")] = dataDict
+                    else:
+                        self.MSDict[getattr(cvParam, "accession")] = cvParam
 
-    "foo"
 
     #returns a dictionary that stores data from cvParams (and optionally userParams), the keys are the Obo tags
     def getMSDict(self):
