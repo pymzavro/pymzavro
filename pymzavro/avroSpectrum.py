@@ -92,7 +92,7 @@ class avroSpectrum(object):
                     }
                     self.MSDict[getattr(cvParam, "accession")] = dataDict
 
-
+    "foo"
 
     #returns a dictionary that stores data from cvParams (and optionally userParams), the keys are the Obo tags
     def getMSDict(self):
