@@ -4,7 +4,6 @@ __author__ = 'marius'
 
 import os
 import tempfile
-import copy
 
 
 import pymzavro.SchemaBuilder
@@ -13,7 +12,7 @@ import pymzavro
 try:
     import pymzml
 except:
-    print("pymzML not found, can't perform spectrum writing")
+    print("pymzML not found")
 
 chromalistSchema = {
     "chromalist": [
@@ -26,7 +25,11 @@ chromalistSchema = {
 }
 
 
+
 class MzConverter():
+    """
+    Class to perform conversion of mzML files to mzavro files.
+    """
     def __init__(self, mzMLFile, avroFile=None, avroMetaFile=None, indexFile=None):
         self.mzMLPath = mzMLFile
         self.mzMLFileMeta = open(self.mzMLPath, "r")

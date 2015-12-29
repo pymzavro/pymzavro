@@ -56,8 +56,8 @@ def test_all():
     print("==Testing pymzML==")
     timeDict["pymzML"] = pymzMLTest(iterations, mzMLFile)
 
-    print("==Testing pyOpenMSregular==")
-    timeDict["pyOpenMSregular"] = pyOpenMSregular(iterations, mzMLFile)
+    #print("==Testing pyOpenMSregular==")
+    #timeDict["pyOpenMSregular"] = pyOpenMSregular(iterations, mzMLFile)
 
     pp = pprint.PrettyPrinter()
     pp.pprint(timeDict)
