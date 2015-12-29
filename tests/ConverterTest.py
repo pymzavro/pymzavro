@@ -12,9 +12,8 @@ class ConverterTest(unittest.TestCase):
     def test_write(self):
         converter = MzConverter(mzMLPath)
         self.assertEqual(converter.convert(), 1)
-
-    def test_read(self):
         self.assertEqual(self.cvParamTest(), 65)
+
 
     def cvParamTest(self):
         avroFile = open(avroPath)

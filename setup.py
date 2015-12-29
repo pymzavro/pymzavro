@@ -11,8 +11,8 @@ setup(
     version = "0.3",
     packages = ["pymzavro"],
     package_dir = {'pymzavro': 'pymzavro'},
-    #data_files=[("/usr/local/lib/python2.7/dist-packages/pymzavro/data", \
-    #             ["data/typeDict.json", "data/mzMLFull.avsc", "data/spectrum.avsc"])]
+    package_data={'data': ['data/mzML1.1.0.xsd']},
+
 )
 
 print("Finished installing pymzavro")

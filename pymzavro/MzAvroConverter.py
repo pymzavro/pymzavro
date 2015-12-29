@@ -1,5 +1,5 @@
 from __future__ import print_function
-
+import os
 __author__ = 'marius'
 
 import os
@@ -30,13 +30,14 @@ class MzConverter():
     """
     Class to perform conversion of mzML files to mzavro files.
     """
-    def __init__(self, mzMLFile, avroFile=None, avroMetaFile=None, indexFile=None):
+    def __init__(self, mzMLFile, avroFile=None, avroMetaFile=None, indexFile=None, xsdFile="mzML1.1.0.xsd"):
         self.mzMLPath = mzMLFile
         self.mzMLFileMeta = open(self.mzMLPath, "r")
         self.mzMLFile = open(self.mzMLPath, "r")
         self.avroFile = avroFile
         self.avroMetaFile = avroMetaFile
         self.indexFile = indexFile
+        self.xsdFile = xsdFile
 
         self.chromaList = []
 
@@ -61,20 +62,22 @@ class MzConverter():
 
 
     def makeSchema(self):
-        xsd = open("mzML1.1.0.xsd", "rb")
-        self.typeFile = open("typeFile.json", "w")
-        self.fullSchemaFile = open("metaSchema.avsc", "w")
-        self.spectrumFile = open("spectrumSchema.avsc", "w")
+        xsd = open(self.xsdFile, "rb")
+        if not (os.path.exists("schemas")):
+            os.makedirs("schemas")
+        self.typeFile = open("schemas/typeFile.json", "w")
+        self.fullSchemaFile = open("schemas/metaSchema.avsc", "w")
+        self.spectrumFile = open("schemas/spectrumSchema.avsc", "w")
 
         schemabuilder = pymzavro.SchemaBuilder.SchemaBuilder(xsd)
         schemabuilder.initFiles(fullSchemaFile=self.fullSchemaFile, subSchemaFile=self.spectrumFile,
                                 typeDictFile=self.typeFile)
         schemabuilder.autoMake()
 
-        self.typeFile = open("typeFile.json", "rb")
-        self.typeFileMeta = open("typeFile.json", "rb")
-        self.fullSchemaFile = open("metaSchema.avsc", "rb")
-        self.spectrumFile = open("spectrumSchema.avsc", "rb")
+        self.typeFile = open("schemas/typeFile.json", "rb")
+        self.typeFileMeta = open("schemas/typeFile.json", "rb")
+        self.fullSchemaFile = open("schemas/metaSchema.avsc", "rb")
+        self.spectrumFile = open("schemas/spectrumSchema.avsc", "rb")
 
     def writeSpectrum(self):
         avroSchemaTmp =  tempfile.TemporaryFile()
