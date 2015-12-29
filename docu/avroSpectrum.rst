@@ -1,5 +1,0 @@
-AvroSpectrumClass
-============================
-
-.. automodule:: avroSpectrum
-   :members:

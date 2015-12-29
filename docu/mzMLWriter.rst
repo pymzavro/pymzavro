@@ -1,5 +1,0 @@
-mzMLWriter
-============================
-
-.. automodule:: mzMLWriter
-   :members:
