@@ -1,5 +1,5 @@
 from __future__ import print_function
-import os
+
 __author__ = 'marius'
 
 import os
@@ -14,15 +14,7 @@ try:
 except:
     print("pymzML not found")
 
-chromalistSchema = {
-    "chromalist": [
-        {
-            "name": "foo",
-            "intensityArray": [1.0, 2.0],
-            "timeArray": [4.0]
-        }
-    ]
-}
+chromalistSchema = []
 
 
 
@@ -82,7 +74,6 @@ class MzConverter():
     def writeSpectrum(self):
         avroSchemaTmp =  tempfile.TemporaryFile()
         avroMetaFileTmp = tempfile.TemporaryFile()
-
 
         reader = pymzml.run.Reader(self.mzMLFile, file_object=self.mzMLFile)
         writer = pymzavro.mzMLWriter.mzMLWriter()

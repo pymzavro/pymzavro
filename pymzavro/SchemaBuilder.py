@@ -9,49 +9,28 @@ from AvscMaker import Partconverter
 
 pp = pprint.PrettyPrinter()
 
-intensityDict = {"name" : "intensityArray", "type":[{
-      "type" : "array", "items" : ["double", "float"]
-    }, "null"]}
+intensityDict = {"name": "intensityArray", "type": [{
+    "type": "array", "items": ["double", "float"]
+}, "null"]}
 
-mzDict = {"name" : "mzArray", "type":[{
-      "type" : "array", "items" : ["double", "float"]
-    }, "null"]}
+mzDict = {"name": "mzArray", "type": [{
+    "type": "array", "items": ["double", "float"]
+}, "null"]}
 
-chromalist = {
-    "name" : "chromalist",
-    "type" : [
+chromatogram = {
+    "name": "chromatogram",
+    "type": [
         {
-            "type" : "array",
-            "items" : [
-                {
-                    "name" : "chromatogram",
-                    "type" : "record",
-                    "fields" : [
-                        {
-                            "name" : "name",
-                            "type" : "string"
-                        },
-                        {
-                            "name" : "intensityArray",
-                            "type" : {
-                                "type" : "array",
-                                "items" : ["double", "float"]
-                            }
-                        },
-                        {
-                            "name" : "timeArray",
-                            "type" : {
-                                "type" : "array",
-                                "items" : ["double", "float"]
-                            }
-                        }
-                    ]
-                }
+            "name": "chromatogram",
+            "type": "record",
+            "fields": [
+                {"name": "name", "type": ["string", "null"]},
+                {"name": "intensityArray", "type": [{"type": "array", "items": ["double", "float"]}, "null"]},
+               {"name": "timeArray", "type": [{"type": "array", "items": ["double", "float"]}, "null"]}
             ]
         }, "null"
     ]
 }
-
 
 
 class SchemaBuilder:
@@ -68,7 +47,7 @@ class SchemaBuilder:
         self.subDictName = "spectrum"
         self.subDictType = "record"
 
-    def initFiles(self, fullSchemaFile = None, typeDictFile = None, subSchemaFile = None):
+    def initFiles(self, fullSchemaFile=None, typeDictFile=None, subSchemaFile=None):
         """
         Sets the files the data of the schemas and the typeDict is written to
         :param fullSchemaFile: opened file the fullSchema is written to
@@ -91,12 +70,10 @@ class SchemaBuilder:
 
         dictcomplex = DictComplex(complexDict)
         newDict = dictcomplex.getnewDict("mzMLType")
-        schema = {rootName: {"type" : newDict}}
+        schema = {rootName: {"type": newDict}}
         AvscMaker = Partconverter(schema)
         self.fullSchema = AvscMaker.getfullSchema()
         self.typeDict = AvscMaker.getTypeDict()
-
-
 
     def initSpectrumCreation(self):
         """
@@ -161,9 +138,8 @@ class SchemaBuilder:
         self.subSchema["fields"].append(customSchema)
 
     def appendChromaList(self):
-        self.fullSchema["fields"].append(chromalist)
-
-
+        self.fullSchema["fields"].append(chromatogram)
+        pass
 
     def writeSubSchema(self):
         """
@@ -221,17 +197,15 @@ class SchemaBuilder:
         return self.typeDict
 
 
-
 if __name__ == "__main__":
     xsd = "small.xsd"
     typeFile = open("typeDict.json", "w")
     fullSchemaFile = open("fullSchema.avsc", "w")
     spectrumFile = open("spectrum.json", "w")
 
-
     schemabuilder = SchemaBuilder(xsd)
     schemabuilder.initFiles(fullSchemaFile=fullSchemaFile, subSchemaFile=spectrumFile, typeDictFile=typeFile)
     schemabuilder.createFullSchema()
     schemabuilder.writeFullSchema()
     schemabuilder.writeTypeDict()
-    #schemabuilder.autoMake()
+    # schemabuilder.autoMake()

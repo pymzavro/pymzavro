@@ -1,6 +1,9 @@
 import unittest
 
 import pymzavro
+import pprint
+import pyavroc
+
 from pymzavro.MzAvroConverter import MzConverter
 
 
@@ -9,6 +12,8 @@ avroPath = "tiny.pwiz.1.1.avro"
 avroMetaPath = "tiny.pwiz.1.1_meta.avro"
 
 class ConverterTest(unittest.TestCase):
+
+
     def test_write(self):
         converter = MzConverter(mzMLPath)
         self.assertEqual(converter.convert(), 1)
@@ -23,8 +28,15 @@ class ConverterTest(unittest.TestCase):
         for avroSpec in avroReader:
             for cvParam in avroSpec.getMSDict():
                 cvParamNumber = cvParamNumber+1
+                pass
 
         return cvParamNumber
+
+    def test_read(self):
+        with open(avroMetaPath) as fp:
+            reader = pyavroc.AvroFileReader(fp, types=False)
+            for record in reader:
+                pass
 
 
 

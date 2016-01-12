@@ -223,21 +223,23 @@ class mzMLWriter(Writer):
         print("===============Writing Metadata===============", "\n")
         self.currentType = "mzMLmeta"
         self.start()
-        self.xmlDict.update({"chromalist" : chromadata})
-        self.writeDictToFile(self.metaFile, self.avroSchema)
-        self.XMLFile.seek(0)
+        self.writeDictToFile(self.metaFile, self.avroSchema, chromadata)
         print("===========Writing Metadata finished==========", "\n")
 
-    def writeDictToFile(self, currentFile, currentSchema):
+    def writeDictToFile(self, currentFile, currentSchema, chromadata):
         schemaFile = currentSchema.read()
         avroWriter = pyavroc.AvroFileWriter(currentFile, schemaFile)
         avroWriter.write(self.xmlDict)
+        for value in chromadata:
+            avroWriter.write({"chromatogram" : value})
 
 
 
     #breaks repetitions
     def checkExtra(self, name):
         if name == "spectrum" and self.currentType == "mzMLmeta":
+            returnType = False
+        elif name == "binary":
             returnType = False
         else:
             returnType = True
