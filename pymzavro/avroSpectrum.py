@@ -221,8 +221,8 @@ class avroSpectrum(object):
         metaReader = pyavroc.AvroFileReader(self.metaDataFile, types=False)
         for item in metaReader:
             self.metaData = item
-        self.metaDatatoDict(self.metaData)
-        self.createChromaDict()
+            if (item.get("chromatogram") is not None):
+                self.createChromaDict(item.get("chromatogram"))
 
 
     def metaDatatoDict(self, metaData):
@@ -249,10 +249,8 @@ class avroSpectrum(object):
                     else:
                         print("Non handled data: ", data)
 
-    def createChromaDict(self):
-        if self.metaData.get("chromalist") is not None:
-            for data in self.metaData.get("chromalist"):
-                self.chromaDict.update({data.get("name") : data})
+    def createChromaDict(self, chromatogram):
+        self.chromaDict.update({chromatogram.get("name") : chromatogram})
 
     def getmetadata(self):
         return self.metaData

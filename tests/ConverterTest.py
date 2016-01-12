@@ -25,11 +25,17 @@ class ConverterTest(unittest.TestCase):
         avroFileMeta = open(avroMetaPath)
         avroReader = pymzavro.reader.PymzAvroReader(avroFile, avroFileMeta)
         cvParamNumber = 0
+        timesum = 0
+        intensitysum = 0
         for avroSpec in avroReader:
             for cvParam in avroSpec.getMSDict():
                 cvParamNumber = cvParamNumber+1
-                pass
-
+        timesum = timesum + sum(avroSpec.getChromatogram("sic").get("timeArray"))
+        timesum = timesum + sum(avroSpec.getChromatogram("tic").get("timeArray"))
+        intensitysum = intensitysum + sum(avroSpec.getChromatogram("sic").get("intensityArray"))
+        intensitysum = intensitysum + sum(avroSpec.getChromatogram("tic").get("intensityArray"))
+        self.assertEqual(timesum, 150)
+        self.assertEqual(intensitysum, 175)
         return cvParamNumber
 
     def test_read(self):
